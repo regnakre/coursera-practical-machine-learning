@@ -45,9 +45,10 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 <div id="header">
-<h1 class="title">Practical Machine Learning - Final Project</h1>
+<h2 class="title">Practical Machine Learning - Final Project</h2>
 </div>
-<h2>Preparing the Data:</h2>
+<hr/>
+<h3>Preparing the Data:</h3>
 <pre class="r">
   <code class="r">
 library(lattice); library(ggplot2); library(caret); library(randomForest); library(rpart); library(rpart.plot);
@@ -81,7 +82,7 @@ dev.off()
   </code>
 </pre>
 
-<h2>Predicting with Decision Tree</h2>
+<h3>Predicting with Decision Tree</h3>
 <pre>
 <code>
 # Predicting with Decision Tree
@@ -96,7 +97,7 @@ confusionMatrix(pred_dt, training_test$classe)
 </pre>
 
 
-<h2>Results of Decision Tree Prediction</h2>
+<h3>Results of Decision Tree Prediction</h3>
 <pre>
   <code>
   Reference
@@ -132,7 +133,7 @@ Balanced Accuracy      0.9270   0.7530   0.8689   0.8098   0.8338
 </pre>
 
 
-<h2>Predicting with Random Forest</h2>
+<h3>Predicting with Random Forest</h3>
 <pre>
   <code>
     mod_rf <- randomForest(classe ~., data = training_train, method = "class")
@@ -142,7 +143,7 @@ confusionMatrix(pred_rf, training_test$classe)
 </pre>
 
 
-<h2> Results of Random Forest Prediction</h2>
+<h3> Results of Random Forest Prediction</h3>
 <pre>
   <code>
     Confusion Matrix and Statistics
@@ -180,21 +181,16 @@ Balanced Accuracy      0.9992   0.9976   0.9950   0.9919   0.9992
 </pre>
 
 
-<h2>Choosing the Prediction Model and Testing</h2>
-<pre>
-  <code>
+<h3>Choosing the Prediction Model and Testing</h3>
+<div>
     Since accuracy for Random Forest model (0.995) is greater than the accuracy achieved with Decision Tree model (0.739), the Random Forests model is choosen for predicting the test data.
-  </code>
-</pre>
-
+  </div>
 <h2>The Results of Final Prediction on Testing Data Set</h2>
 <pre>
   <code>
     pred_final <- predict(mod_rf, testing, type = "class")
 pred_final
-  </code>
-      
-      <code>
+
         1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
  B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
 Levels: A B C D E
