@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<h2>Preparing the Data:</h2>
+<pre class="r">
+<code  class="r">
+<p>library(lattice); library(ggplot2); library(caret); library(randomForest); library(rpart); library(rpart.plot);<br />
+  library(RColorBrewer)<br />
+library(rattle)</p>
+<p>training &lt;- read.csv(&quot;pml-training.csv&quot;, na.strings=c(&quot;NA&quot;,&quot;#DIV/0!&quot;, &quot;&quot;))<br />
+  testing &lt;- read.csv(&quot;pml-testing.csv&quot;, na.strings=c(&quot;NA&quot;,&quot;#DIV/0!&quot;, &quot;&quot;))</p>
+<p># show the colums with NA count<br />
+  data.frame(colSums(is.na(training)))</p>
+<p># remove the columns that contains only NA values<br />
+  training &lt;- training[, colSums(is.na(training)) == 0]<br />
+  testing &lt;- testing[, colSums(is.na(testing)) == 0]<br />
+</p>
+<p># Delete variables that are irrelevant: user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7). <br />
+  training   &lt;- training[,-c(1:7)]<br />
+  testing &lt;- testing[,-c(1:7)]</p>
+<p># partition the data so that 70% of the training dataset into training and the remaining 30% to testing<br />
+  intrain &lt;- createDataPartition(y = training$classe, p = 0.7, list=FALSE)<br />
+  training_train &lt;- training[intrain,]<br />
+  training_test &lt;- training[-intrain,]<br />
+</p>
+<p># let's check the number of items in each classe with a bar graph<br />
+  png('plot1.png')<br />
+  plot(training_train$classe, col=&quot;gray&quot;, main=&quot;# of Classes at Each Level&quot;, xlab=&quot;classe&quot;, ylab=&quot;frequency&quot;)<br />
+  dev.off()<br />
+  #Level A is the most frequent while level D is the least frequent.<br />
+</p>
+
+</code>
+</pre>
+</body>
+</html>
