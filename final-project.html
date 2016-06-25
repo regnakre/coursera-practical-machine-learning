@@ -132,26 +132,74 @@ Balanced Accuracy      0.9270   0.7530   0.8689   0.8098   0.8338
 </pre>
 
 
-<h2>Predicting with Decision Tree</h2>
+<h2>Predicting with Random Forest</h2>
 <pre>
   <code>
+    mod_rf <- randomForest(classe ~., data = training_train, method = "class")
+pred_rf <- predict(mod_rf, training_test, type = "class")
+confusionMatrix(pred_rf, training_test$classe)
   </code>
 </pre>
 
 
-<h2>Predicting with Decision Tree</h2>
+<h2> Results of Random Forest Prediction</h2>
 <pre>
   <code>
+    Confusion Matrix and Statistics
+
+          Reference
+Prediction    A    B    C    D    E
+         A 1672    2    0    0    0
+         B    2 1135    4    0    0
+         C    0    2 1019   12    1
+         D    0    0    3  949    0
+         E    0    0    0    3 1081
+
+Overall Statistics
+                                          
+               Accuracy : 0.9951          
+                 95% CI : (0.9929, 0.9967)
+    No Information Rate : 0.2845          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.9938          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            0.9988   0.9965   0.9932   0.9844   0.9991
+Specificity            0.9995   0.9987   0.9969   0.9994   0.9994
+Pos Pred Value         0.9988   0.9947   0.9855   0.9968   0.9972
+Neg Pred Value         0.9995   0.9992   0.9986   0.9970   0.9998
+Prevalence             0.2845   0.1935   0.1743   0.1638   0.1839
+Detection Rate         0.2841   0.1929   0.1732   0.1613   0.1837
+Detection Prevalence   0.2845   0.1939   0.1757   0.1618   0.1842
+Balanced Accuracy      0.9992   0.9976   0.9950   0.9919   0.9992
   </code>
 </pre>
 
 
-<h2>Predicting with Decision Tree</h2>
+<h2>Choosing the Prediction Model and Testing</h2>
 <pre>
   <code>
+    Since accuracy for Random Forest model (0.995) is greater than the accuracy achieved with Decision Tree model (0.739), the Random Forests model is choosen for predicting the test data.
   </code>
 </pre>
 
+<h2>The Results of Final Prediction on Testing Data Set</h2>
+<pre>
+  <code>
+    pred_final <- predict(mod_rf, testing, type = "class")
+pred_final
+  </code>
+      
+      <code>
+        1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
+ B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
+Levels: A B C D E
+      </code>
+</pre>
 
 <script>
 
