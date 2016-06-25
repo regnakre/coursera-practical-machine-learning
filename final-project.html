@@ -52,65 +52,57 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 <div id="header">
-<h1 class="title">Exercise manner prediction</h1>
+<h1 class="title">Practical Machine Learning - Final Project</h1>
 </div>
 
+<h2>Preparing the Data:</h2>
+<pre class="r">
+  <code class="r">
+    
+library(lattice); library(ggplot2); library(caret); library(randomForest); library(rpart); library(rpart.plot);
+library(RColorBrewer)
+library(rattle)
 
-<p>Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement  a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: <a href="http://groupware.les.inf.puc-rio.br/har">http://groupware.les.inf.puc-rio.br/har</a> (see the section on the Weight Lifting Exercise Dataset).</p>
-<p>The links for the training and test data are given below:</p>
-<ul>
-<li><a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a></li>
-<li><a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv</a></li>
-</ul>
-<p>First of all we load them.</p>
-<pre class="r"><code>if (!file.exists(&quot;pmlTraining.csv&quot;)) {
-    download.file(&quot;http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv&quot;, 
-                  destfile = &quot;pmlTraining.csv&quot;)
-}
-if (!file.exists(&quot;pmlTesting.csv&quot;)) {
-    download.file(&quot;http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv&quot;, 
-                  destfile = &quot;pmlTesting.csv&quot;)
-}
+training <- read.csv("pml-training.csv", na.strings=c("NA","#DIV/0!", ""))
+testing <- read.csv("pml-testing.csv", na.strings=c("NA","#DIV/0!", ""))
 
-pmlTraining &lt;- read.csv(&quot;pmlTraining.csv&quot;, header = TRUE, na.strings = c(&quot;NA&quot;,&quot;&quot;))
-pmlTesting &lt;- read.csv(&quot;pmlTesting.csv&quot;, header = TRUE, na.strings = c(&quot;NA&quot;,&quot;&quot;))</code></pre>
-<p>By observing the datasets, we can see, that there are a lot of variables, that are mostly NA (e.g. <em>kurtosis_roll_belt</em>, <em>avg_roll_arm</em>). Let’s remove these variables from the dataset, so that we are left with variables that do not have NAs. In addition, I also decided to remove variables such as <em>X</em>, <em>user_name</em>, timestamps and <em>new_window</em>, because they do not seem like good predictors for the manner of doing an exercise.</p>
-<pre class="r"><code>NAs &lt;- apply(pmlTraining, 2, function(x) { sum(is.na(x)) })
-pmlTrainingCleaned &lt;- pmlTraining[, which(NAs == 0)]
-pmlTestingCleaned &lt;- pmlTesting[, which(NAs == 0)]
+# show the colums with NA count
+data.frame(colSums(is.na(training)))
 
-pmlTrainingCleaned &lt;- subset(pmlTrainingCleaned, select=-c(X, user_name, raw_timestamp_part_1, raw_timestamp_part_2, cvtd_timestamp, new_window))
-pmlTestingCleaned &lt;- subset(pmlTestingCleaned, select=-c(X, user_name, raw_timestamp_part_1, raw_timestamp_part_2, cvtd_timestamp, new_window))</code></pre>
-<pre class="r"><code>dim(pmlTrainingCleaned)</code></pre>
-<pre><code>## [1] 19622    54</code></pre>
-<pre class="r"><code>dim(pmlTestingCleaned)</code></pre>
-<pre><code>## [1] 20 54</code></pre>
-<p>Now we split the training dataset into training and validation parts and train a random forest classifier.</p>
-<pre class="r"><code>suppressMessages(library(caret))
- 
-trainIndices &lt;- createDataPartition(pmlTrainingCleaned$classe, p=0.7, list=F)
-pmlTrainingCleaned_train &lt;- pmlTrainingCleaned[trainIndices,]
-pmlTrainingCleaned_valid &lt;- pmlTrainingCleaned[-trainIndices,]
+# remove the columns that contains only NA values
+training <- training[, colSums(is.na(training)) == 0]
+testing <- testing[, colSums(is.na(testing)) == 0]
 
-suppressWarnings(
-suppressMessages(
-  fit &lt;- train(classe ~ ., 
-               data=pmlTrainingCleaned_train,
-               method=&quot;rf&quot;,
-               trControl=trainControl(method=&quot;cv&quot;, number=4),
-               verbose=F)
-))</code></pre>
-<p>Let’s check the accuracy on the validation set.</p>
-<pre class="r"><code>predicted &lt;- predict(fit, pmlTrainingCleaned_valid)
-accuracy &lt;- sum(predicted == pmlTrainingCleaned_valid$classe) / length(predicted)</code></pre>
-<p>This means we achieved 99.7451% accuracy on the validation set.</p>
-<p>The predictions for the test set are:</p>
-<pre class="r"><code>predict(fit, pmlTestingCleaned)</code></pre>
-<pre><code>##  [1] B A B A A E D B A A B C B A E E A B B B
-## Levels: A B C D E</code></pre>
+# Delete variables that are irrelevant: user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7). 
+training   <- training[,-c(1:7)]
+testing <- testing[,-c(1:7)]
 
+# partition the data so that 70% of the training dataset into training and the remaining 30% to testing
+intrain <- createDataPartition(y = training$classe, p = 0.7, list=FALSE)
+training_train <- training[intrain,]
+training_test <- training[-intrain,]
 
-</div>
+# let's check the number of items in each classe with a bar graph
+png('plot1.png')
+plot(training_train$classe, col="gray", main="# of Classes at Each Level", xlab="classe", ylab="frequency")
+dev.off()
+#Level A is the most frequent while level D is the least frequent.
+  </code>
+</pre>
+
+<h2>Predicting with Decision Tree</h2>
+<pre>
+<code>
+# Predicting with Decision Tree
+mod_dt <- rpart(classe~., data = training_train, method = "class")
+png('plot2_dt.png')
+fancyRpartPlot(mod_dt);dev.off()
+
+pred_dt <- predict(mod_dt, training_test, type = "class")
+confusionMatrix(pred_dt, training_test$classe)
+
+</code>
+</pre>
 
 <script>
 
