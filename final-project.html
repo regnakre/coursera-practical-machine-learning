@@ -100,7 +100,7 @@ confusionMatrix(pred_dt, training_test$classe)
 <h3>Results of Decision Tree Prediction</h3>
 <pre>
   <code>
-  Reference
+Reference
 Prediction    A    B    C    D    E
          A 1535  172   26   52   15
          B   54  639   52   76   79
@@ -136,7 +136,7 @@ Balanced Accuracy      0.9270   0.7530   0.8689   0.8098   0.8338
 <h3>Predicting with Random Forest</h3>
 <pre>
   <code>
-    mod_rf <- randomForest(classe ~., data = training_train, method = "class")
+mod_rf <- randomForest(classe ~., data = training_train, method = "class")
 pred_rf <- predict(mod_rf, training_test, type = "class")
 confusionMatrix(pred_rf, training_test$classe)
   </code>
@@ -182,10 +182,9 @@ Balanced Accuracy      0.9992   0.9976   0.9950   0.9919   0.9992
 
 
 <h3>Choosing the Prediction Model and Testing</h3>
-<div>
-    Since accuracy for Random Forest model (0.995) is greater than the accuracy achieved with Decision Tree model (0.739), the Random Forests model is choosen for predicting the test data.
+<div>Since accuracy for Random Forest model (0.995) is greater than the accuracy achieved with Decision Tree model (0.739), the Random Forests model is choosen for predicting the test data.
   </div>
-<h2>The Results of Final Prediction on Testing Data Set</h2>
+<div><strong>The Results of Final Prediction on Testing Data Set</strong></div>
 <pre>
   <code>
     pred_final <- predict(mod_rf, testing, type = "class")
