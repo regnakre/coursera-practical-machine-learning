@@ -33,7 +33,7 @@
 
 As seen in the figure above, level A is the most frequent while level D is the least frequent.
   
-Predicting with Decision Tree
+## Predicting with Decision Tree
 
     ### Predicting with Decision Tree
     mod_dt <- rpart(classe~., data = training_train, method = "class")
@@ -44,7 +44,7 @@ Decision Tree Classification Results
 
 ![Alt text](/plot2_dt.png?raw=true "Decision Tree Classification")    
 
-### Decision Tree Prediction
+Results of Predicting with Decision Tree
 
     pred_dt <- predict(mod_dt, training_test, type = "class")
     confusionMatrix(pred_dt, training_test$classe)
@@ -85,7 +85,7 @@ Decision Tree Classification Results
     pred_rf <- predict(mod_rf, training_test, type = "class")
     confusionMatrix(pred_rf, training_test$classe)
   
-## Results of Random Forest Prediction
+Results of Random Forest Prediction
   
         Confusion Matrix and Statistics
     
