@@ -31,7 +31,7 @@
     
 ![Alt text](/plot1.png?raw=true "Frequencies of Classes")
 
-    # As seen in the figure above, level A is the most frequent while level D is the least frequent.
+As seen in the figure above, level A is the most frequent while level D is the least frequent.
   
 ## Predicting with Decision Tree
 
