@@ -16,7 +16,8 @@
     training <- training[, colSums(is.na(training)) == 0]
     testing <- testing[, colSums(is.na(testing)) == 0]
     
-    # Delete variables that are irrelevant: user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7). 
+    # Delete variables that are irrelevant: user_name, raw_timestamp_part_1, 
+    # raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7). 
     training   <- training[,-c(1:7)]
     testing <- testing[,-c(1:7)]
     
