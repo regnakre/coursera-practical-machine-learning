@@ -33,12 +33,14 @@
 
 As seen in the figure above, level A is the most frequent while level D is the least frequent.
   
-## Predicting with Decision Tree
+Predicting with Decision Tree
 
     ### Predicting with Decision Tree
     mod_dt <- rpart(classe~., data = training_train, method = "class")
     png('plot2_dt.png')
     fancyRpartPlot(mod_dt);dev.off()
+
+Decision Tree Classification Results
 
 ![Alt text](/plot2_dt.png?raw=true "Decision Tree Classification")    
 
