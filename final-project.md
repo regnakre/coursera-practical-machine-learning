@@ -1,6 +1,6 @@
 #Practical Machine Learning - Final Project
 <hr/>
-##Preparing the Data:
+##Preparing the Data and Exploration
   
     # install the required libraries
     library(lattice); library(ggplot2); library(caret); library(randomForest); 
