@@ -2,33 +2,35 @@
 <hr/>
 ##Preparing the Data:
   
-    library(lattice); library(ggplot2); library(caret); library(randomForest); library(rpart); library(rpart.plot);
-    library(RColorBrewer)
-    library(rattle)
+    # install the required libraries
+    library(lattice); library(ggplot2); library(caret); library(randomForest); 
+    library(rpart); library(rpart.plot);library(RColorBrewer);library(rattle)
+    
     training <- read.csv("pml-training.csv", na.strings=c("NA","#DIV/0!", ""))
     testing <- read.csv("pml-testing.csv", na.strings=c("NA","#DIV/0!", ""))
 
-    ### Show the colums with NA count
+    # Show the colums with NA count
     data.frame(colSums(is.na(training)))
 
-    ### remove the columns that contains only NA values
+    # remove the columns that contains only NA values
     training <- training[, colSums(is.na(training)) == 0]
     testing <- testing[, colSums(is.na(testing)) == 0]
     
-    ### Delete variables that are irrelevant: user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7). 
+    # Delete variables that are irrelevant: user_name, raw_timestamp_part_1, raw_timestamp_part_,2 cvtd_timestamp, new_window, and  num_window (columns 1 to 7). 
     training   <- training[,-c(1:7)]
     testing <- testing[,-c(1:7)]
     
-    ### partition the data so that 70% of the training dataset into training and the remaining 30% to testing
+    # partition the data so that 70% of the training dataset into training and the remaining 30% to testing
     intrain <- createDataPartition(y = training$classe, p = 0.7, list=FALSE)
     training_train <- training[intrain,]
     training_test <- training[-intrain,]
     
-    ### let's check the number of items in each classe with a bar graph
-    png('plot1.png')
+    # plotting the number of items in each classe with a bar graph
     plot(training_train$classe, col="gray", main="# of Classes at Each Level", xlab="classe", ylab="frequency")
-    dev.off()
-    ### Level A is the most frequent while level D is the least frequent.
+    
+![Alt text](/plot1.png?raw=true "Frequencies of Classes")
+
+    # As seen in the figure above, level A is the most frequent while level D is the least frequent.
   
 ## Predicting with Decision Tree
 
