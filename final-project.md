@@ -39,13 +39,14 @@ As seen in the figure above, level A is the most frequent while level D is the l
     mod_dt <- rpart(classe~., data = training_train, method = "class")
     png('plot2_dt.png')
     fancyRpartPlot(mod_dt);dev.off()
-    
+
+![Alt text](/plot2_dt.png?raw=true "Decision Tree Classification")    
+
+### Decision Tree Prediction
+
     pred_dt <- predict(mod_dt, training_test, type = "class")
     confusionMatrix(pred_dt, training_test$classe)
 
-
-## Results of Decision Tree Prediction
-  
     Reference
     Prediction    A    B    C    D    E
              A 1535  172   26   52   15
